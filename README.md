@@ -62,9 +62,7 @@ The system helps determine whether a product is **safe** or **unsafe** by valida
 
 2. You can create the database manually using MySQL Workbench or terminal.
 
-3. MySQL must be running on port 3306.
-
-4. The database connection settings (username, password, DB name) should be updated in:
+3. The database connection settings (username, password, DB name) should be updated in:
       src/main/resources/application.properties
 
 #### 🎥 Demo
