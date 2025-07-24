@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ürün Listesi</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #2f3640;
+            background: #f5f6fa;
+        }
+        h1, h2 {
+            color: #0984e3;
+            margin-bottom: 20px;
+        }
+        .container {
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background: #ffffff;
+            box-shadow: 0 5px 10px #0003;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #dcdde1;
+            text-align: left;
+        }
+        th {
+            background: #0984e3;
+            color: #ffffff;
+        }
+        tbody tr:hover {
+            background: #edf7ff;
+        }
+        button {
+            padding: 6px 12px;
+            margin: 5px 5px 5px 0;
+            background: #0984e3;
+            color: #ffffff;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #74b9ff;
+        }
+        form {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 5px 10px #0003;
+            border-radius: 10px;
+        }
+        form input, form textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            color: #2d3436;
+            border: 1px solid #dcdde1;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        form button {
+            width: 100%;
+            padding: 10px;
+            background: #0984e3;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+        form button:hover {
+            background: #74b9ff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ürün Listesi</h1>
+
+    <table id="productTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>Menşei</th>
+            <th>Açıklama</th>
+            <th>Tarih</th>
+            <th>QR</th>
+            <th>QR Link</th>
+            <th>İşlem</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Yeni Ürün Oluştur / Güncelle</h2>
+    <form id="productForm" style="display:none">
+        <input type="hidden" id="productId">
+        <input type="text" id="productName" placeholder="Ürün adı" required>
+        <input type="text" id="origin" placeholder="Menşei" required>
+        <textarea id="description" placeholder="Açıklama"></textarea>
+        <button type="submit">Kaydet</button>
+    </form>
+</div>
+
+<script>
+    let userRole = "ANONIM";
+
+    fetch('/api/auth/role')
+        .then(res => res.text())
+        .then(role => {
+            userRole = role.toUpperCase();
+
+            const productForm = document.getElementById("productForm");
+
+            // Sadece admin ise formu göster
+            if (userRole === "ADMIN") {
+                productForm.style.display = "block";
+            } else {
+                productForm.style.display = "none";
+            }
+        })
+        .catch(err => {
+            console.error("Rol bilgisi alınamadı:", err);
+            document.getElementById("productForm").style.display = "none";
+        });
+
+    const tableBody = document.querySelector("#productTable tbody");
+    const form = document.getElementById("productForm");
+    const productIdInput = document.getElementById("productId");
+    const nameInput = document.getElementById("productName");
+    const originInput = document.getElementById("origin");
+    const descriptionInput = document.getElementById("description");
+
+    function loadProducts() {
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(products => {
+                tableBody.innerHTML = '';
+                products.forEach(p => {
+                    const row = document.createElement('tr');
+                    let actionButtons = '';
+                    if (userRole === "ADMIN") {
+                        actionButtons += `
+                            <button onclick="editProduct(${p.product_id}, '${p.product_name}', '${p.origin}', '${p.description || ''}')">
+                                Düzenle
+                            </button>
+                            <button onclick="deleteProduct(${p.product_id})">
+                                Sil
+                            </button>`;
+                    }
+                    actionButtons += `
+                            <button onclick="goToDetail(${p.product_id})">
+                                Detay
+                            </button>`;
+
+                    row.innerHTML = `
+                        <td>${p.product_id}</td>
+                        <td>${p.product_name}</td>
+                        <td>${p.origin}</td>
+                        <td>${p.description || ''}</td>
+                        <td>${p.creation_date || ''}</td>
+                        <td>${p.qr_code || ''}</td>
+                        <td>${(p.qrCodes || []).map(q => `<a href="${q.qrCodeValue}" target="_blank">${q.qrCodeValue}</a>`).join('<br>')}</td>
+                        <td>${actionButtons}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(err => console.error(err));
+    }
+
+    function editProduct(id, name, origin, desc) {
+        productIdInput.value = id;
+        nameInput.value = name;
+        originInput.value = origin;
+        descriptionInput.value = desc;
+    }
+
+    function deleteProduct(id) {
+        if (!confirm("Silmek istediğine emin misin?")) return;
+        fetch(`/api/products/${id}`, { method:'DELETE'})
+            .then(() => loadProducts())
+            .catch(err => console.error(err));
+    }
+
+    function goToDetail(id) {
+        window.location.href = `/product-detail.html?id=${id}`;
+
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const id = productIdInput.value;
+        const product = {
+            product_name: nameInput.value,
+            origin: originInput.value,
+            description: descriptionInput.value
+        };
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `/api/products/${id}` : "/api/products";
+
+        fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product)
+        })
+            .then(() => {
+                form.reset();
+                loadProducts();
+            })
+            .catch(err => console.error(err));
+    });
+
+    // Sayfa yüklendiğinde ürünleri yükle
+    loadProducts();
+</script>
+
+</body>
+</html>

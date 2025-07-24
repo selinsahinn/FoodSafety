@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #2f3640;
+        }
+
+        .container {
+            width: 320px;
+            margin: 100px auto;
+            padding: 30px;
+            background: #ffffff;
+            box-shadow: 0 5px 10px #0003;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .container h1 {
+            margin-bottom: 20px;
+            color: #0984e3;
+            font-size: 24px;
+        }
+
+        .container label {
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #dcdde1;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background: #0984e3;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .container button:hover {
+            background: #74b9ff;
+        }
+
+        .show-password {
+            display: block;
+            margin-bottom: 20px;
+            color: #0984e3;
+            font-size: 14px;
+            text-decoration: underline;
+            cursor: pointer;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Giriş</h1>
+    <form action="/login" method="post">
+        <label for="username">Kullanıcı Adı:</label>
+        <input id="username" name="username" required />
+
+        <label for="password">Şifre:</label>
+        <input id="password" name="password" type="password" required />
+
+        <span id="toggleBtn" class="show-password">Şifreyi göster</span>
+
+        <button type="submit">Giriş</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('toggleBtn').addEventListener('click', () => {
+        const password = document.getElementById('password');
+        password.type = password.type === 'password' ? 'text' : 'password';
+        document.getElementById('toggleBtn').innerText = password.type === 'password'
+            ? 'Şifreyi göster'
+            : 'Şifreyi gizle';
+    });
+</script>
+
+</body>
+</html>
