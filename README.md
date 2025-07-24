@@ -48,9 +48,9 @@ The system helps determine whether a product is **safe** or **unsafe** by valida
 1. Open a terminal in the React project folder.
 
 2. Run the following commands:
-
-npm install  
-npm run start  
+   ```properties
+   npm install  
+   npm run start  
 
 3.React app will run at:
 📍 http://localhost:3000
