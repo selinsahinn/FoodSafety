@@ -1,69 +1,72 @@
-🥗 FoodSafety – Full Stack Web Application with Custom Blockchain Logic
+## 🥗 FoodSafety – Full Stack Web Application with Custom Blockchain Logic
 
-🎓 This project was developed as my graduation project for the Computer Engineering program at Sakarya University.
+### 🎓 Graduation Project  
+This project was developed as my graduation project for the Computer Engineering program at Sakarya University.  
 
-A full stack web application for tracking food products using a custom-built blockchain structure in the backend.
-The system helps determine whether a product is safe or unsafe by validating its transaction history through a simplified blockchain.
+<br/>
 
-🔐 Key Feature
-Developed a blockchain structure from scratch using Java and Spring Boot.
+A full stack web application for tracking food products using a **custom-built blockchain structure** in the backend.  
+The system helps determine whether a product is **safe** or **unsafe** by validating its transaction history through a simplified blockchain.  
 
-Each product operation is stored as a block in the chain.
+<br/>
 
-Ensures data integrity, traceability, and tamper-proof tracking of food processing steps.
+### 🔐 Key Feature  
+- Developed a **blockchain structure from scratch** using Java and Spring Boot.  
+- Each product operation is stored as a block in the chain.  
+- Ensures **data integrity**, **traceability**, and **tamper-proof tracking** of food processing steps.  
 
-⚙️ Technologies Used
-Frontend: React
+<br/>
 
-Backend: Spring Boot (Java 17)
+### ⚙️ Technologies Used  
+- **Frontend**: React  
+- **Backend**: Spring Boot (Java 17)  
+- **Database**: MySQL  
+- **ORM**: JPA / Hibernate  
+- **IDE**: IntelliJ IDEA (backend), Visual Studio Code (frontend)  
 
-Database: MySQL
+<br/>
 
-JPA / Hibernate
+### 🚀 How to Run the Project  
 
-IntelliJ IDEA (for backend)
+#### 📦 Backend (Spring Boot)  
+1. Open the project in IntelliJ IDEA (or your preferred IDE).  
+2. Make sure **MySQL** is installed and running (default port: `3306`).  
+3. Create a database (the name must match the one in `application.properties`).  
+4. Update the following in `src/main/resources/application.properties`:  
 
-Visual Studio Code (for frontend)
+   ```properties
+   spring.datasource.username=your_mysql_username  
+   spring.datasource.password=your_mysql_password  
+   spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name  
 
-🚀 How to Run the Project
-📦 Backend (Spring Boot)
-Open the project in IntelliJ IDEA (or your preferred IDE).
+5.Run the Spring Boot application. It will be available at:
+📍 http://localhost:8080
 
-Make sure MySQL is installed and running (default port: 3306).
+<br/>
 
-Create a database (name should match the one in application.properties).
+#### 💻 Frontend (React)
+1. Open a terminal in the React project folder.
 
-Update the following in src/main/resources/application.properties:
-      spring.datasource.username=your_mysql_username
-      spring.datasource.password=your_mysql_password
-      spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+2. Run the following commands:
 
-Run the Spring Boot application. It runs on:
-      📍 http://localhost:8080
+npm install  
+npm run start  
 
+3.React app will run at:
+📍 http://localhost:3000
 
-💻 Frontend (React)
-Open a terminal in the React project folder.
+<br/>
 
-Run the following commands:
-      npm install
-      npm run start
-      
-React app runs on:
-      📍 http://localhost:3000
+#### 🛢️ Database
+1. MySQL must be running on port 3306.
 
-🛢️ Database
-MySQL must be running on port 3306.
+2. You can create the database manually using MySQL Workbench or terminal.
 
-You can create the database manually using MySQL Workbench or terminal.
+3. MySQL must be running on port 3306.
 
-Table creation is handled automatically via JPA when the backend starts.
-      MySQL must be running on port 3306.
-
-The database connection settings (username, password, DB name) should be updated in:
+4. The database connection settings (username, password, DB name) should be updated in:
       src/main/resources/application.properties
 
-🎥 Demo
+#### 🎥 Demo
 A short video showing the working version of the application will be added to this repository soon.
 📌 The video is not uploaded yet but will be included shortly.
-
